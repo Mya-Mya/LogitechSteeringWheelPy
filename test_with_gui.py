@@ -1,18 +1,21 @@
 import ctypes
 import sys
 import time
+import socket
 
 from PyQt5 import QtGui, QtWidgets, QtCore
 
 import logitech_steering_wheel as lsw
 
+HOST = "169.254.100.16"
+PORT = 8000
 
 class MyMainwindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.update_timer = QtCore.QTimer()
-        self.update_timer.setInterval(100)
+        self.update_timer.setInterval(30)
         self.update_timer.setSingleShot(False)
         self.update_timer.timeout.connect(self._update_sw)
 
@@ -57,7 +60,19 @@ class MyMainwindow(QtWidgets.QMainWindow):
     def _update_sw(self):
         lsw.update()
         state = lsw.get_state(0)
+        state_c = lsw.get_c_state(0)
+        pdata = ctypes.string_at(ctypes.byref(state_c), ctypes.sizeof(state_c))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.sendto(pdata, (HOST, PORT))
+        
         self.current_angle.setValue(state.lX)
+        if (state.lX > 4000):
+            force = min(99, max(0, ((state.lX - 4000)/100)))
+        else:
+            force = max(-99, min(0, ((state.lX + 4000)/100)))
+
+        print("Force ", force)
+        lsw.play_constant_force(0, int(force))
 
     def toggle_feedback(self):
         if lsw.is_playing(0, lsw.ForceType.BUMPY_ROAD):

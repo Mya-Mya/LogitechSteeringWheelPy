@@ -107,6 +107,15 @@ def get_state(index: int) -> State:
     c_struct_state_pointer = _dll_handle.LogiGetState(ctypes.c_int(index))
     return State.from_c_struct(c_struct_state_pointer.contents)
 
+def get_c_state(index: int) -> DIJOYSTATE2:
+    """
+    Get the state of the controller in the standard way.
+
+    :returns DIJOYSTATE2*
+    """
+    c_struct_state_pointer = _dll_handle.LogiGetState(ctypes.c_int(index))
+    return c_struct_state_pointer.contents
+
 
 def get_device_path(index: int, buffer_size: int):
     """

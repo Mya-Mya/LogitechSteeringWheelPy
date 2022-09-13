@@ -29,11 +29,13 @@ if __name__ == '__main__':
     lsw.update()
     s = lsw.get_state(0)
 
-    lsw.play_bumpy_road_effect(0, 20)
+    print("Playing bumpy road")
+    lsw.play_slippery_road_effect(0, 80)
 
     time.sleep(2.)
+    print("Done")
 
-    lsw.stop_bumpy_road_effect(0)
+    lsw.stop_slippery_road_effect(0)
 
     # p, r = lsw.get_current_controller_properties(0)
 
