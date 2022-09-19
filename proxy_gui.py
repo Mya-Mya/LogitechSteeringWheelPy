@@ -125,7 +125,6 @@ class MyMainwindow(QtWidgets.QMainWindow):
 
         except socket.error as e:
             print("No data")
-            lsw.stop_constant_force(0)
             
 
     def toggle_feedback(self):
