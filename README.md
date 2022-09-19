@@ -36,5 +36,31 @@ successfully. Make sure the wheel powers on.
 1. Run `python3 proxy_gui.py` script on `W`
 2. Run `./proxy_receiver` on `R`
 
-You should see wheel state reception on `R` and force feedback data on `W`
+You should see wheel state reception on `R` and force feedback data on `W`. The data rates on
+either side can be set by changing the `TX_INTERVAL_MS` field
+
+
+
+## UDP Data Encoding
+
+The following section highlights the data encoding for the current communication protocol in the
+test application. This was designed to be simple enough to enable meeting the basic requirements.
+You may add more functionality if you'd like
+
+### Wheel ---> System
+
+The transmission from `proxy_gui.py` send the following:
+1. 32-bit packet counter
+2. [DIJOYSTATE2](logitech_steering_wheel/_state.py) ctype structure
+
+These are both packed in order into a bytearray. Note, this enables convenient unpacking of
+wheel state into an object in C, as demonstrated in the test [receiver](proxy_receiver/receiver.c)
+
+### System ---> Wheel
+
+The `proxy_gui.py` expect to receive:
+1. A single byte representing the signed direction of force (valid values include -100 to 100 
+as highlighted in the SDK)
+
+
 
