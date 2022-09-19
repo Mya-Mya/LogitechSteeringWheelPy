@@ -40,7 +40,7 @@ void *send_force(void *arg) {
   while (1) {
     usleep(TX_INTERVAL_MS * 1000);
     printf("Send force %d\n", force);
-    force = (force + 1);
+    force += 5;
     sendto(sockfd, (char*) &force, 1, MSG_CONFIRM,
 		    (struct sockaddr *) &servaddr, sizeof(servaddr));
 
