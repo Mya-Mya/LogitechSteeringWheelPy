@@ -2,11 +2,13 @@ import ctypes
 import sys
 import time
 import socket
+import pygetwindow as gw
 
 import logitech_steering_wheel as lsw
 
-HOST = "127.0.0.1"
+HOST = "169.254.100.16"
 PORT = 8000
+'''
 class DIJOYSTATE2(ctypes.Structure):
     _fields_ = [
         ('lX', ctypes.c_int),
@@ -40,32 +42,38 @@ class DIJOYSTATE2(ctypes.Structure):
         ('lFRz', ctypes.c_int),
         ('rglFSlider', ctypes.c_int * 2),
     ]
+'''
 
 def connect():
-        initialized = lsw.initialize(True)
+    hwnd = gw.getActiveWindow()._hWnd
+    initialized = lsw.initialize_with_window(True, hwnd)
 
-        if initialized:
-            print('initialized successfully')
-        else:
-            print('initialization failed')
-            return
+    if initialized:
+        print('initialized successfully')
+    else:
+        print('initialization failed')
+        return
 
-        if lsw.is_connected(0):
-            print('connected to a steering wheel at index 0')
+    if lsw.is_connected(0):
+        print('connected to a steering wheel at index 0')
         
-        lsw.update()
-        print(lsw.get_current_controller_properties(0))
+    lsw.update()
+    print(lsw.get_current_controller_properties(0))
 
 def main():
-    #connect()
-    state = DIJOYSTATE2(lX=-4, lZ=7)
+    connect()
+    #state = DIJOYSTATE2(lX=-4, lZ=7)
+    i = 0
     while(1):
-        #lsw.update()
-        #state = lsw.get_c_state(0)
-        time.sleep(1)
+        i += 1
+        lsw.update()
+        state = lsw.get_c_state(0)
+        print("Transmit ", state.lX)
         pdata = ctypes.string_at(ctypes.byref(state), ctypes.sizeof(state))
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.sendto(pdata, (HOST, PORT))
+        time.sleep(1)
+
         
 if __name__ == '__main__':
     main()
