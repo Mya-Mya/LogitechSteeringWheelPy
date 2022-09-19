@@ -13,52 +13,28 @@ In some cases, Windows has been known to install other drivers when a steering w
 2) uninstall the driver Windows automatically installed, and leave steering wheel plugged-in and turned on, and
 3) Install the Logitech Gaming Software (this should automatically install the correct drivers)
 
-## Test/Example
+## Using the SDK
 
-The script below can be used to test the connection with a steering wheel and serves as an example of how to connect, get the current state, and play force feedback effects. This example and a GUI based example can be found on the GitHub repo of this module.
-
-```
-import time
-
-import logitech_steering_wheel as lsw
-import pygetwindow as gw
+For quick access, the SDK documentation is included in the repo.
+The respective Python functions to access DLL functionality can be found [here](logitech_steering_wheel/_wrapper.py)
+Refer to the script [proxy_gui.py](proxy_gui.py) for details on interfacing with the wheel.
 
 
-if __name__ == '__main__':
-    # The steering wheel should be connected to s specific window, the first step is to get the window handle and initialize the SDK
-    
-    window_handle = gw.getActiveWindow()._hWnd
-    initialized = lsw.initialize_with_window(ignore_x_input_controllers=True, hwnd=window_handle)
+## Proxy Application Test
 
-    print("SDK version is: " + str(lsw.get_sdk_version()))
+You will require 2 machines (call them `W` and `R`), with at least 1 running Windows (`W`) 
+to interface with the logitech wheel. Make sure `W` and `R` can communicate over either wireless
+or Ethernet.
 
-    connected = lsw.is_connected(0)
+### Setup
+1. Plug in the steering wheel to `W` after performing the installation instructions above
+successfully. Make sure the wheel powers on.
+2. Configure the IP Addresses and Ports accordingly in applications `proxy_gui.py` and `proxy_receiver/receiver.c`.
+3. Compile C receiver on `R`: `cd proxy_receiver; gcc -pthread receiver.c -o proxy_receiver`
 
-    lsw.update()
+### Running the applications
+1. Run `python3 proxy_gui.py` script on `W`
+2. Run `./proxy_receiver` on `R`
 
-    # Check if setting and Getting of the operating range works 
-    operated = lsw.set_operating_range(0, 100)
-    print(lsw.get_operating_range(0))
+You should see wheel state reception on `R` and force feedback data on `W`
 
-    if connected and generated:
-        print('Steering wheel online')
-    else:
-        print('Connection failed')
-        exit()
-
-    # The update function is called to update the current state, the get state function returns a state object representing the current state of the 
-    # steering wheel
-    lsw.update()
-    s = lsw.get_state(0)
-    print(s)
-
-    # Test the force feedback by playing the bumpy road effect on 20 percent of its maximal magnitude 
-    lsw.play_bumpy_road_effect(0, 20)
-
-    time.sleep(2.)
-
-    lsw.stop_bumpy_road_effect(0)
-
-    # close the connection
-    lsw.shutdown()
-```

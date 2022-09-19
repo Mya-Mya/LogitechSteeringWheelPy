@@ -9,23 +9,27 @@ from PyQt5 import QtGui, QtWidgets, QtCore
 
 import logitech_steering_wheel as lsw
 
+TX_INTERVAL_MS = 50
+
+## Configure this ##
 REMOTE_HOST = "169.254.100.16"
 S_PORT = 8000
 
-LOCAL_HOST = "169.254.227.87"
+LOCAL_HOST = "169.254.227.87" # IP of local interface
 R_PORT = 8001
+##
 
 class MyMainwindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.update_timer = QtCore.QTimer()
-        self.update_timer.setInterval(50)
+        self.update_timer.setInterval(TX_INTERVAL_MS)
         self.update_timer.setSingleShot(False)
         self.update_timer.timeout.connect(self._update_sw)
 
         self.transmit_timer = QtCore.QTimer()
-        self.transmit_timer.setInterval(50)
+        self.transmit_timer.setInterval(TX_INTERVAL_MS)
         self.transmit_timer.setSingleShot(False)
         self.transmit_timer.timeout.connect(self._transmit)
 

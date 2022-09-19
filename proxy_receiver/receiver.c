@@ -11,12 +11,16 @@
 
 #include "state.h"
 
-#define LOCAL_HOST "169.254.100.16"
+/** Configure this **/
+#define LOCAL_HOST "169.254.100.16" // IP of local interface
 #define R_PORT 8000
 
 #define REMOTE_HOST "169.254.227.87"
 #define S_PORT 8001
+/** **/
 
+
+#define TX_INTERVAL_MS 300
 #define STATE_SIZE sizeof(DIJOYSTATE2_t)
 
 void *send_force(void *arg) {
@@ -34,7 +38,7 @@ void *send_force(void *arg) {
   }
 
   while (1) {
-    usleep(300 * 1000);
+    usleep(TX_INTERVAL_MS * 1000);
     printf("Send force %d\n", force);
     force = (force + 1);
     sendto(sockfd, (char*) &force, 1, MSG_CONFIRM,
