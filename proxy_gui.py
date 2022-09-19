@@ -110,6 +110,8 @@ class MyMainwindow(QtWidgets.QMainWindow):
     def _update_sw(self):
         lsw.update()
         state = lsw.get_state(0)
+
+        # Set GUI vars
         self.current_angle.setValue(state.lX)
         self.throttle_angle.setValue(state.lY)
         self.brake_angle.setValue(state.lRz)
@@ -119,15 +121,12 @@ class MyMainwindow(QtWidgets.QMainWindow):
             force = int.from_bytes(force_byte, 'little', signed=True)
             print("Received | (Pkt {}) : {}".format(self.receive_ctr, force))
             self.receive_ctr += 1
+            lsw.play_constant_force(0, int(force))
+
         except socket.error as e:
             print("No data")
+            lsw.stop_constant_force(0)
             
-        if (state.lX > 4000):
-            force = min(99, max(0, ((state.lX - 4000)/100)))
-        else:
-            force = max(-99, min(0, ((state.lX + 4000)/100)))
-
-        lsw.play_constant_force(0, int(force))
 
     def toggle_feedback(self):
         if lsw.is_playing(0, lsw.ForceType.BUMPY_ROAD):
