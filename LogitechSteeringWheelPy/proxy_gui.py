@@ -7,7 +7,7 @@ import socket
 
 from PyQt5 import QtGui, QtWidgets, QtCore
 
-import logitech_steering_wheel as lsw
+import LogitechSteeringWheelPy as lsw
 
 TX_INTERVAL_MS = 50
 
