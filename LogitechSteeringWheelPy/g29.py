@@ -1,3 +1,4 @@
+from typing import Literal
 from .lswtypes import *
 from .gateway import *
 from datetime import datetime
@@ -5,7 +6,7 @@ from math import radians
 
 
 class G29:
-    def __init__(self, index: int):
+    def __init__(self, index: int, positive_angle:Literal["counterclockwise", "clockwise"]="counterclockwise"):
         """
         Before using this class, make sure...
 
@@ -31,6 +32,11 @@ class G29:
 
         """
         self.index = index
+        self.positive_angle = positive_angle
+        self.sgn_angle = {
+            "counterclockwise":-1,
+            "clockwise":+1
+        }[positive_angle]
         self.state:DIJOYSTATE2 = None
         self.steering_range_rad = .0
         self.steering_rad = .0
@@ -47,7 +53,7 @@ class G29:
         steering_range, _ = get_operating_range(self.index)
 
         self.steering_range_rad = radians(steering_range)
-        self.steering_rad = - self.state.lX / 65536 * self.steering_range_rad
+        self.steering_rad = self.sgn_angle * self.state.lX / 65536 * self.steering_range_rad
         self.throttle_normalized = 1 - (self.state.lY + 32768) / 65535
         self.brake_normalized = 1 - (self.state.lRz + 32768) / 65535
         self.updated_at = datetime.now()
