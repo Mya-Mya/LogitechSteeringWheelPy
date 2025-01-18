@@ -25,7 +25,7 @@ screen.blit(
 pygame.display.update()
 
 # [LogitechSteeringWheelPy] Initialize
-dll_file = Path(Path("./DLLLocation.txt").read_text())
+dll_file = Path(Path("./DLLLocation.txt").read_text()) # Please create `DLLLocation.txt` and type the path to the dll file.
 lsw.load_dll(dll_file)
 initialized = lsw.initialize_with_window(True, hwnd)
 assert initialized
