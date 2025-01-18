@@ -29,7 +29,10 @@ dll_file = Path(Path("./DLLLocation.txt").read_text()) # Please create `DLLLocat
 lsw.load_dll(dll_file)
 initialized = lsw.initialize_with_window(True, hwnd)
 assert initialized
-g29 = lsw.G29(0)
+g29 = lsw.G29(
+    index=0,
+    positive_angle="counterclockwise"
+)
 
 should_loop = True
 while should_loop:
