@@ -48,7 +48,6 @@ class G29:
         """
         Note that this function should be called JUST ONCE per frame of your game.
         """
-        update()
         self.state = get_state(self.index)
         steering_range, _ = get_operating_range(self.index)
 
