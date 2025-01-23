@@ -71,10 +71,10 @@ g29 = lsw.G29(
 )
 ```
 
-Call the `update` function of the `G29` instance on each frame of your game.
-This function internally calls `update` and `get_state` functions to read the state data of the G29 device.
-Then, this function also converts the read state data into a usable format.
+Call the `update` function of the `G29` instance and the `update` function of the wrapper functions of the SDK on each frame of your game.
+This function internally calls `get_state` function to parse the state data of the G29 device, into a usable format.
 ```pyton
+lsw.update()
 g29.update()
 ```
 And do not forget to shutdown at the end of your program.
