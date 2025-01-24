@@ -103,4 +103,4 @@ print(g29.steering_range_rad)
 
 We would like to be able to provide the following values.
 
-* **Button Press**: G29 device has some buttons, and we know that we can retrieve data on the buttons by the SDK functions. We want to implement a function that tells you if each button has been pressed or not based on the data obtained by the SDK.
+* POV buttons triggered/released checking
