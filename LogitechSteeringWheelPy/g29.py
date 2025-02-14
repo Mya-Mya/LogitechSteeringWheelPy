@@ -44,8 +44,8 @@ class G29:
         Button.Options: 9,
         Button.Playstation: 24,
         Button.Return: 23,
-        Button.PaddleLeft: 4,
-        Button.PaddleRight: 5,
+        Button.PaddleLeft: 5,
+        Button.PaddleRight: 4,
     }
 
     POV_BUTTONS = {Button.Up, Button.Right, Button.Down, Button.Left}
