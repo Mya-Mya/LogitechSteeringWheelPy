@@ -50,7 +50,12 @@ class G29:
 
     POV_BUTTONS = {Button.Up, Button.Right, Button.Down, Button.Left}
 
-    def __init__(self, index: int, positive_angle: Literal["counterclockwise", "clockwise"] = "counterclockwise"):
+    def __init__(
+            self,
+            index: int = 0,
+            positive_angle: Literal["counterclockwise", "clockwise"] = "counterclockwise",
+            operating_range: int = 900
+    ):
         """
         Before using this class, make sure...
 
@@ -88,6 +93,7 @@ class G29:
         self.brake_normalized = .0
         self.updated_at = datetime.now()
         self.pressed_pov: Optional[G29.Button] = None
+        set_operating_range(index, operating_range)
 
     def update(self):
         """
