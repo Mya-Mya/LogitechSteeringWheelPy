@@ -15,7 +15,6 @@ setup(
     url="https://github.com/Mya-Mya/LogitechSteeringWheelPy",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
         "Operating System :: Microsoft :: Windows",
     ],
 )
