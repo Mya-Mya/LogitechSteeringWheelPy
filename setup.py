@@ -7,7 +7,7 @@ name = "LogitechSteeringWheelPy"
 setup(
     name=name,
     version='0.0.1',
-    packages=['logitech_steering_wheel'],
+    packages=['LogitechSteeringWheelPy'],
     license='MIT License',
     description='A wrapper to use the Logitech Steering Wheel SDK in Python',
     long_description=long_description,
