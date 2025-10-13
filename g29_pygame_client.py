@@ -20,6 +20,7 @@ def draw_text(text: str, color, dest):
     screen.blit(surface, dest)
 
 
+
 # [LogitechSteeringWheelPy] Initialize
 dll_file = Path(
     Path("./DLLLocation.txt").read_text())  # Please create `DLLLocation.txt` and type the path to the dll file.
@@ -27,8 +28,9 @@ lsw.load_dll(dll_file)
 initialized = lsw.initialize_with_window(True, hwnd)
 assert initialized
 g29 = lsw.G29(
-    index=1,
-    positive_angle="counterclockwise"
+    index=0,
+    positive_angle="counterclockwise",
+    operating_range_deg=900 # Set it to match the settings in the Logicool G Hub app.
 )
 
 should_loop = True
@@ -56,7 +58,6 @@ while should_loop:
     pygame.display.update()
 
     print(
-        f"Steering Range = {g29.steering_range_rad:.03f} rad",
         f"Steering = {g29.steering_rad:.03f} rad",
         f"Throttle = {g29.throttle_normalized:.03f}",
         f"Brake = {g29.brake_normalized:.03f}",
