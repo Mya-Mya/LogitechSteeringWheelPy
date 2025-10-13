@@ -5,3 +5,6 @@ logitech_steering_wheel.egg-info
 *.pyc
 venv
 DLLLocation.txt
+uv.lock
+.python-version
+pyproject.toml
